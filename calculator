@@ -1,0 +1,29 @@
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+
+def start(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text("Kalkulyator botiga xush kelibsiz!ltimos, hisob-kitob uchun ifodani yozing.")
+
+def calculate(update: Update, context: CallbackContext) -> None:
+    user_input = update.message.text
+    try:
+        # Hisoblash
+        result = eval(user_input)
+        update.message.reply_text(f"Natija: {result}")
+    except Exception as e:
+        update.message.reply_text("Xato: Iltimos, to'g'ri ifoda kiriting.")
+
+def main() -> None:
+    # Bot tokenini shu yerga yozing
+    updater = Updater("7975402891:AAGZgKILu6yvhhHk_86RJvuxeK2abl_6YiI")
+
+    dispatcher = updater.dispatcher
+
+    dispatcher.add_handler(CommandHandler("Salom sizga qanday yordam bera olaman? Admin @Mashhura1609", start))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, calculate))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == "__main__":
+    main()
